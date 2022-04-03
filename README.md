@@ -18,6 +18,7 @@ You can create and edit tasks for apple devices
 - React Modal
 - React Toastify
 - Axios
+- JSON Web Token
 - ESLint AirBnB TS
 
 ## Requirements
