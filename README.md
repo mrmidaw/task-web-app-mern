@@ -19,7 +19,7 @@ You can create and edit tasks for apple devices
 - React Toastify
 - Axios
 - JSON Web Token
-- ESLint AirBnB TS
+- ESLint TS
 
 ## Requirements
 
