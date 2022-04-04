@@ -1,6 +1,10 @@
 import React, { FC, useState } from 'react';
 import { BiLogInCircle } from 'react-icons/bi';
 import { toast } from 'react-toastify';
+
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { login } from '../features/auth/authSlice';
+
 interface IForm {
     email: string;
     password: string;
@@ -13,6 +17,8 @@ export const Login: FC = () => {
     });
 
     const { email, password } = formData;
+    const dispatch = useAppDispatch();
+    const { user, isLoading, isSuccess, isError, message } = useAppSelector((state) => state.auth);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prevState) => ({
@@ -24,6 +30,12 @@ export const Login: FC = () => {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const userData = {
+            email,
+            password
+        };
+
+        dispatch(login(userData));
     };
 
     return (

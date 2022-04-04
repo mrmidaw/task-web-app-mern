@@ -1,6 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { register, reset } from '../features/auth/authSlice';
+
+
 interface IForm {
     name: string;
     email: string;
@@ -18,6 +25,23 @@ export const Register: FC = () => {
 
     const { name, email, password, password2 } = formData;
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { user, isLoading, isSuccess, isError, message } = useAppSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(message);
+        }
+
+        // Redirect when logged in 
+        if (isSuccess || user) {
+            navigate('/');
+        }
+
+        dispatch(reset());
+    }, [isError, isSuccess, user, message, navigate, dispatch]);
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -30,8 +54,15 @@ export const Register: FC = () => {
 
         if (password !== password2) {
             toast.error("Passwords do not match");
-        }
+        } else {
+            const userData = {
+                name,
+                email,
+                password
+            };
 
+            dispatch(register(userData));
+        }
     };
 
     return (
