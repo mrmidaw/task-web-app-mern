@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { register, reset } from '../features/auth/authSlice';
 
+import { Spinner } from '../components/Spinner';
+
 
 interface IForm {
     name: string;
@@ -64,6 +66,10 @@ export const Register: FC = () => {
             dispatch(register(userData));
         }
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <>

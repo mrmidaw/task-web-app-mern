@@ -1,9 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { BiLogInCircle } from 'react-icons/bi';
-import { toast } from 'react-toastify';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { login } from '../features/auth/authSlice';
+import { login, reset } from '../features/auth/authSlice';
+
+import { useNavigate } from 'react-router-dom';
+
+import { Spinner } from '../components/Spinner';
+import { toast } from 'react-toastify';
 
 interface IForm {
     email: string;
@@ -18,7 +22,21 @@ export const Login: FC = () => {
 
     const { email, password } = formData;
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { user, isLoading, isSuccess, isError, message } = useAppSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(message);
+        }
+
+        // Redirect when logged in 
+        if (isSuccess || user) {
+            navigate('/');
+        }
+
+        dispatch(reset());
+    }, [isError, isSuccess, user, message, navigate, dispatch]);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prevState) => ({
@@ -37,6 +55,10 @@ export const Login: FC = () => {
 
         dispatch(login(userData));
     };
+
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     return (
         <>
