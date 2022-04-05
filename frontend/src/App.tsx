@@ -6,7 +6,10 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { NewTicket } from './pages/NewTicket';
+
 import { Header } from './components/Header';
+import { PrivateRoute } from './components/PrivateRoute';
 
 
 export const App: FC = () => {
@@ -18,6 +21,9 @@ export const App: FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/new-ticket" element={<PrivateRoute />} >
+            <Route path="/new-ticket" element={<NewTicket />} />
+          </Route>
         </Routes>
         <ToastContainer />
       </div>
