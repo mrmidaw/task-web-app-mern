@@ -12,7 +12,7 @@ import { BackButton } from '../components/BackButton';
 
 export const NewTicket: FC = () => {
     const { user } = useAppSelector((state) => state.auth);
-    const { isError, isLoading, isSuccess, message } = useAppSelector((state) => state.ticket);
+    const { isError, isLoading, isSuccess, message } = useAppSelector((state) => state.tickets);
 
     const [name] = useState(user.name);
     const [email] = useState(user.email);
