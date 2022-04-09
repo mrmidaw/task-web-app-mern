@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface iNoteState {
-    notes: [];
+    notes: [] | any;
     isError: boolean;
     isSuccess: boolean,
     isLoading: boolean,
@@ -39,6 +39,27 @@ export const getNotes = createAsyncThunk(
 );
 
 
+// Create ticket note
+export const createNote = createAsyncThunk(
+    'notes/create',
+    async ({ noteText, ticketId }: any, thunkAPI: any) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+            const response = await axios.post(`/api/tickets/${ticketId}/notes`, { text: noteText }, config);
+            return response.data;
+        } catch (error: any) {
+            const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+            return thunkAPI.rejectWithValue(message);
+        }
+    }
+);
+
+
 // Note Reducer
 export const noteSlice = createSlice({
     name: 'note',
@@ -57,6 +78,19 @@ export const noteSlice = createSlice({
                 state.notes = action.payload;
             })
             .addCase(getNotes.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(createNote.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(createNote.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.notes.push(action.payload);
+            })
+            .addCase(createNote.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
