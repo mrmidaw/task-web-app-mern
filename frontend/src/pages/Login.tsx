@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { BiLogInCircle } from 'react-icons/bi';
 
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import { login, reset } from '../features/auth/authSlice';
 
 import { useNavigate } from 'react-router-dom';

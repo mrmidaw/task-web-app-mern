@@ -3,7 +3,7 @@ import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { FaUser } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import {  logout, reset } from '../features/auth/authSlice';
 
 export const Header: FC = () => {

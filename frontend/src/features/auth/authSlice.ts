@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 // Get user from localStorage 
-const localUser = JSON.parse(localStorage.getItem('user') || '{}');
+const localUser = JSON.parse(localStorage.getItem('user')!);
 
 // Logout use
 const logoutLocalUser = () => localStorage.removeItem('user');

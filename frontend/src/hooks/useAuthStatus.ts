@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAppSelector } from '../store/hooks';
+import { useAppSelector } from '../store/store';
 
 export const useAuthStatus = () => {
     const [loggedIn, setLoggedIn] = useState<boolean>(false);

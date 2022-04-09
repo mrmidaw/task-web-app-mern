@@ -1,14 +1,27 @@
 import React, { FC, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import { getTicket, closeTicket } from '../features/tickets/ticketSlice';
+import { getNotes, reset as noteReset } from '../features/notes/noteSlice';
+
+import { NoteItem } from '../components/NoteItem';
 
 import { Spinner } from '../components/Spinner';
 import { BackButton } from '../components/BackButton';
 
 import { toast } from 'react-toastify';
 
+
+interface INote {
+    _id: string;
+    user: string;
+    ticket: string;
+    text: string;
+    isStaff: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 interface ITicket {
     _id: string;
@@ -23,6 +36,7 @@ interface ITicket {
 export const Ticket: FC = () => {
 
     const { ticket, isLoading, isError, message } = useAppSelector((state) => state.tickets);
+    const { notes, isLoading: notesIsLoading } = useAppSelector((state) => state.notes);
     const { ticketId } = useParams();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -32,6 +46,7 @@ export const Ticket: FC = () => {
             toast.error(message);
         }
         dispatch(getTicket(ticketId));
+        dispatch(getNotes(ticketId));
     }, [dispatch, isError]);
 
     // Close ticket
@@ -42,7 +57,7 @@ export const Ticket: FC = () => {
     };
 
 
-    if (isLoading) {
+    if (isLoading || notesIsLoading) {
         return <Spinner />;
     }
 
@@ -74,7 +89,12 @@ export const Ticket: FC = () => {
                     <h3>Description of Issue</h3>
                     <p>{ticket.description}</p>
                 </div>
+                <h2>Notes</h2>
             </header>
+
+            {notes.map((note: INote) => (
+                <NoteItem key={note._id} note={note} />
+            ))}
 
             {ticket.status == 'new' && (
                 <button className='btn btn-block btn-danger' onClick={onTicketClose} >

@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import { createTicket, reset } from '../features/tickets/ticketSlice';
 
 import { toast } from 'react-toastify';

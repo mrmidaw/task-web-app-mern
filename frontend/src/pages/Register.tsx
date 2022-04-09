@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/store';
 import { register, reset } from '../features/auth/authSlice';
 
 import { Spinner } from '../components/Spinner';
